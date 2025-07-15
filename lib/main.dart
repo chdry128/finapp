@@ -56,9 +56,18 @@ class MyApp extends StatelessWidget {
       ),
       home: Consumer<AuthProvider>(
         builder: (context, auth, _) {
-          return auth.user == null
-              ? const LoginScreen()
-              : const DashboardScreen();
+          return AnimatedSwitcher(
+            duration: const Duration(milliseconds: 500),
+            child: auth.user == null
+                ? const LoginScreen()
+                : const DashboardScreen(),
+            transitionBuilder: (child, animation) {
+              return FadeTransition(
+                opacity: animation,
+                child: child,
+              );
+            },
+          );
         },
       ),
     );
