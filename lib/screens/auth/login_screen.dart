@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:personal_finance_lite/providers/auth_provider.dart';
 import 'package:personal_finance_lite/screens/auth/register_screen.dart';
+import 'package:personal_finance_lite/utils/dialogs.dart';
 import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -14,18 +15,18 @@ class _LoginScreenState extends State<LoginScreen> {
   final _form = GlobalKey<FormState>();
   final _email = TextEditingController();
   final _pass = TextEditingController();
-  bool _loading = false;
 
   Future<void> _submit() async {
     if (!_form.currentState!.validate()) return;
-    setState(() => _loading = true);
+    showLoadingDialog(context);
     try {
       await Provider.of<AuthProvider>(context, listen: false)
           .login(_email.text.trim(), _pass.text.trim());
+      Navigator.of(context).pop(); // Dismiss loading dialog
+      showSuccessDialog(context, 'Login successful!');
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
-    } finally {
-      setState(() => _loading = false);
+      Navigator.of(context).pop(); // Dismiss loading dialog
+      showErrorDialog(context, e.toString());
     }
   }
 
@@ -53,7 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               const SizedBox(height: 20),
               ElevatedButton(
-                onPressed: _loading ? null : _submit,
+                onPressed: _submit,
                 child: const Text('LOGIN'),
               ),
               TextButton(
