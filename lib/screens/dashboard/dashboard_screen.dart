@@ -42,6 +42,8 @@ class DashboardScreen extends StatelessWidget {
             _TodaySummary(data: data, today: today),
             _MonthlyBudget(data: data, monthStart: monthStart, monthEnd: monthEnd),
             const SizedBox(height: 20),
+            Image.asset('assets/images/finance_illustration.png', height: 150),
+            const SizedBox(height: 20),
             const Text('Expense by Category', style: TextStyle(fontSize: 18)),
             const SizedBox(height: 10),
             SizedBox(
@@ -164,7 +166,7 @@ class _NavigationButtons extends StatelessWidget {
   }
 }
 
-class _NavButton extends StatelessWidget {
+class _NavButton extends StatefulWidget {
   final String label;
   final IconData icon;
   final Widget screen;
@@ -172,11 +174,54 @@ class _NavButton extends StatelessWidget {
   const _NavButton({required this.label, required this.icon, required this.screen});
 
   @override
+  State<_NavButton> createState() => _NavButtonState();
+}
+
+class _NavButtonState extends State<_NavButton>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _scaleAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 200),
+    );
+    _scaleAnimation = Tween<double>(begin: 1.0, end: 0.95).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return ElevatedButton.icon(
-      icon: Icon(icon),
-      label: Text(label),
-      onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => screen)),
+    return GestureDetector(
+      onTapDown: (_) => _controller.forward(),
+      onTapUp: (_) => _controller.reverse(),
+      onTapCancel: () => _controller.reverse(),
+      onTap: () {
+        Future.delayed(const Duration(milliseconds: 100), () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => widget.screen),
+          );
+        });
+      },
+      child: ScaleTransition(
+        scale: _scaleAnimation,
+        child: ElevatedButton.icon(
+          icon: Icon(widget.icon),
+          label: Text(widget.label),
+          onPressed: null, // Disable the default onPressed
+        ),
+      ),
     );
   }
 }

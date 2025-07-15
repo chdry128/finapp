@@ -4,6 +4,7 @@ import 'package:personal_finance_lite/providers/auth_provider.dart';
 import 'package:personal_finance_lite/providers/theme_provider.dart';
 import 'package:personal_finance_lite/screens/auth/login_screen.dart';
 import 'package:personal_finance_lite/screens/dashboard/dashboard_screen.dart';
+import 'package:personal_finance_lite/utils/constants.dart';
 import 'package:provider/provider.dart';
 
 Future<void> main() async {
@@ -35,8 +36,24 @@ class MyApp extends StatelessWidget {
       title: 'Personal Finance Lite',
       debugShowCheckedModeBanner: false,
       themeMode: themeProvider.themeMode,
-      theme: ThemeData.light(useMaterial3: true),
-      darkTheme: ThemeData.dark(useMaterial3: true),
+      theme: ThemeData(
+        useMaterial3: true,
+        primaryColor: kPrimaryColor,
+        colorScheme: ColorScheme.fromSwatch().copyWith(
+          primary: kPrimaryColor,
+          secondary: kAccentColor,
+          background: kBackgroundColor,
+        ),
+        scaffoldBackgroundColor: kBackgroundColor,
+      ),
+      darkTheme: ThemeData.dark(useMaterial3: true).copyWith(
+        primaryColor: kPrimaryColor,
+        colorScheme: ColorScheme.fromSwatch().copyWith(
+          primary: kPrimaryColor,
+          secondary: kAccentColor,
+          brightness: Brightness.dark,
+        ),
+      ),
       home: Consumer<AuthProvider>(
         builder: (context, auth, _) {
           return auth.user == null
