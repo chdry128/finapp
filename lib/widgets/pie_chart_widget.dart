@@ -54,8 +54,7 @@ class _PieChartWidgetState extends State<PieChartWidget> {
                 value: e.value,
                 title:
                     '${e.key}\n${(e.value / total * 100).toStringAsFixed(1)}%',
-                color: Colors
-                    .primaries[e.key.hashCode % Colors.primaries.length],
+                color: Color(e.key.hashCode * 0xFFFFFF).withOpacity(1.0),
                 radius: radius,
                 titleStyle: TextStyle(
                   fontSize: fontSize,

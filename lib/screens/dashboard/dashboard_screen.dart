@@ -217,9 +217,15 @@ class _NavButtonState extends State<_NavButton>
       child: ScaleTransition(
         scale: _scaleAnimation,
         child: ElevatedButton.icon(
-          icon: Icon(widget.icon),
-          label: Text(widget.label),
+          icon: Icon(widget.icon, color: Colors.white),
+          label: Text(widget.label, style: const TextStyle(color: Colors.white)),
           onPressed: null, // Disable the default onPressed
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Theme.of(context).primaryColor,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+          ),
         ),
       ),
     );
