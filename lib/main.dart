@@ -45,6 +45,11 @@ class MyApp extends StatelessWidget {
           background: kBackgroundColor,
         ),
         scaffoldBackgroundColor: kBackgroundColor,
+        textTheme: const TextTheme(
+          bodyLarge: TextStyle(color: kTextColor),
+          bodyMedium: TextStyle(color: kTextColor),
+          titleMedium: TextStyle(color: kTextColor, fontWeight: FontWeight.bold),
+        ),
       ),
       darkTheme: ThemeData.dark(useMaterial3: true).copyWith(
         primaryColor: kPrimaryColor,
@@ -52,6 +57,11 @@ class MyApp extends StatelessWidget {
           primary: kPrimaryColor,
           secondary: kAccentColor,
           brightness: Brightness.dark,
+        ),
+        textTheme: const TextTheme(
+          bodyLarge: TextStyle(color: Colors.white),
+          bodyMedium: TextStyle(color: Colors.white70),
+          titleMedium: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
       ),
       home: Consumer<AuthProvider>(
